@@ -6,8 +6,8 @@ load("@bazel_features//private:util.bzl", "ge", "lt")
 FLAGS = {
     "experimental_remote_cache_eviction_retries": struct(
         default = "5",
-        when = ge("6.2.0") and lt("8.0.0rc1"),
-        description = """
+        if_bazel_version = ge("6.2.0") and lt("8.0.0rc1"),
+        description = """\
         This flag was added in Bazel 6.2.0 with a default of zero:
         https://github.com/bazelbuild/bazel/commit/24b45890c431de98d586fdfe5777031612049135
         For Bazel 8.0.0rc1 the default was changed to 5:

@@ -5,14 +5,15 @@ Many are obscure, many are important to use, and many have an undesirable defaul
 
 Bazel options may be stored in `*.bazelrc` files, in several places on disk.
 Read [the Bazel bazelrc documentation](https://bazel.build/run/bazelrc).
-This repo provides a custom bazelrc file matching your bazel version you may vendor into your repo.
-We call them "presets".
+
+This rule generates a custom bazelrc file that matches your bazel version
+and makes it convenient to vendor into your repo.
+We call this a "preset".
 
 > [!NOTE]  
 > Ideally bazelrc would allow import statements from external repositories, so that you wouldn't be forced to copy presets into your repo.
 > However the current behavior is that imports must be repository-relative.
-> This could also be considered a feature, since it means that newer preset changes will be code-reviewed when they arrive in your repo,
-> rather than as an invisible side-effect of updating the version of bazelrc-presets.
+> This could also be considered a feature, since it means that newer preset changes will be code-reviewed when they arrive in your repo, rather than as an invisible side-effect of updating the version of bazelrc-presets.
 
 ## Usage
 
@@ -28,8 +29,7 @@ bazelrc_preset(
 ```
 
 Now create the preset with `bazel run //tools:preset.update`.
-Note, you don't need to remember the command, it will be printed if the file is missing
-or has outdated contents.
+Note, you don't need to remember the command, it will be printed if the file is missing or has outdated contents.
 
 Finally, import it into your project `/.bazelrc` file.
 We suggest you add it at the top, so that project-specific flags may override, as follows:
@@ -50,4 +50,9 @@ import %workspace%/tools/preset.bazelrc
 try-import %workspace%/user.bazelrc
 ```
 
-See https://github.com/bazel-contrib/SIG-rules-authors/issues/106
+## References and Credits
+
+This was originally a feature of Aspect's bazel-lib:
+https://github.com/bazel-contrib/bazel-lib/tree/main/.aspect/bazelrc
+
+This rule is maintained by the Rules Authors SIG, see https://github.com/bazel-contrib/SIG-rules-authors/issues/106
