@@ -21,7 +21,7 @@ def _generate_preset(ctx):
         content.add("{} --{}={}".format(
             getattr(meta, "command", "common"),
             flag,
-            meta.default if type(meta.default) == "int" else "\"{}\"".format(meta.default),
+            "\"{}\"".format(meta.default) if type(meta.default) == "string" else meta.default,
         ))
     ctx.actions.write(ctx.outputs.out, content)
 
