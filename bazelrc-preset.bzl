@@ -15,11 +15,14 @@ def _generate_preset(ctx):
     content.add("")
 
     for flag, meta in FLAGS.items():
-        if not meta.if_bazel_version:
-            continue
-        command = getattr(meta, "command", "common")
+        if not getattr(meta, "if_bazel_version", True):
+            continue # Flag does not apply to the version of Bazel currently running
         content.add_all(meta.description.split("\n"), format_each = "# %s", map_each = _strip)
-        content.add("{} --{}={}".format(command, flag, meta.default))
+        content.add("{} --{}={}".format(
+            getattr(meta, "command", "common"),
+            flag,
+            meta.default if type(meta.default) == "int" else "\"{}\"".format(meta.default),
+        ))
     ctx.actions.write(ctx.outputs.out, content)
 
 generate_preset = rule(

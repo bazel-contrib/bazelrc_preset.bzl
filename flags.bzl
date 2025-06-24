@@ -1,11 +1,12 @@
-"Database of Bazel flags"
+"Database of Bazel flags which apply across every Bazel use-case"
 # TODO: copy this code here? move the whole preset thing to bazel_features?
 # buildifier: disable=bzl-visibility
 load("@bazel_features//private:util.bzl", "ge", "lt")
 
 FLAGS = {
+    # https://registry.build/flag/bazel?flag=experimental_remote_cache_eviction_retries
     "experimental_remote_cache_eviction_retries": struct(
-        default = "5",
+        default = 5,
         if_bazel_version = ge("6.2.0") and lt("8.0.0rc1"),
         description = """\
         This flag was added in Bazel 6.2.0 with a default of zero:
