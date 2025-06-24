@@ -4,3 +4,4 @@ module(
 )
 
 bazel_dep(name = "aspect_bazel_lib", version = "2.13.0")
+bazel_dep(name = "bazel_features", version = "1.0.0")
