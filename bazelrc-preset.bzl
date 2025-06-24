@@ -27,7 +27,6 @@ generate_preset = rule(
     attrs = {"out": attr.output()},
 )
 
-# NB: rename the repo to bazelrc-preset.bzl to allow short load?
 def bazelrc_preset(name, out_file = None):
     generate_preset(
         name = name,
