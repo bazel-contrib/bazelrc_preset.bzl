@@ -1,1 +1,3 @@
 import %workspace%/tools/preset.bazelrc
+
+--lockfile_mode=error

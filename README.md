@@ -5,7 +5,8 @@ Many are obscure, many are important to use, and many have an undesirable defaul
 
 Bazel options may be stored in `*.bazelrc` files, in several places on disk.
 Read [the Bazel bazelrc documentation](https://bazel.build/run/bazelrc).
-This repo provides bazelrc files you may vendor into your repo, which we call "presets".
+This repo provides a custom bazelrc file matching your bazel version you may vendor into your repo.
+We call them "presets".
 
 > [!NOTE]  
 > Ideally bazelrc would allow import statements from external repositories, so that you wouldn't be forced to copy presets into your repo.
@@ -18,7 +19,7 @@ This repo provides bazelrc files you may vendor into your repo, which we call "p
 First add `bazelrc-preset.bzl` to your `MODULE.bazel` file.
 Then call it from a BUILD file, for example in `tools/BUILD`:
 
-```
+```starlark
 load("@bazelrc-preset.bzl", "bazelrc_preset")
 
 bazelrc_preset(

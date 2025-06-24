@@ -1,4 +1,4 @@
-"Rule/Macro pair to produce bazelrc preset file"
+"""Rule/Macro pair to produce bazelrc preset file"""
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file")
 load("//:flags.bzl", "FLAGS")
 
