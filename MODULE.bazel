@@ -1,0 +1,6 @@
+module(
+    name = "bazelrc-preset.bzl",
+    version = "", # replaced during BCR publishing
+)
+
+bazel_dep(name = "aspect_bazel_lib", version = "2.13.0")
