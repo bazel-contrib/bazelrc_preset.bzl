@@ -11,9 +11,9 @@ and makes it convenient to vendor into your repo.
 We call this a "preset".
 
 > [!NOTE]  
-> Ideally bazelrc would allow import statements from external repositories, so that you wouldn't be forced to copy presets into your repo.
-> However the current behavior is that imports must be repository-relative.
-> This could also be considered a feature, since it means that newer preset changes will be code-reviewed when they arrive in your repo, rather than as an invisible side-effect of updating the version of bazelrc-presets.
+> Preset changes can cause behavior changes in your repo that are undesirable or even break the build.
+> Since vendoring is required, changes will be code-reviewed when they arrive in your repo, rather than as an invisible side-effect of updating the version of bazelrc-presets.
+> For this reason, this ruleset does not stricly follow Semantic Versioning.
 
 ## Usage
 
@@ -24,12 +24,13 @@ Then call it from a BUILD file, for example in `tools/BUILD`:
 load("@bazelrc-preset.bzl", "bazelrc_preset")
 
 bazelrc_preset(
-    name = "preset", # writes preset.bazelrc
+    name = "preset",
 )
 ```
 
 Now create the preset with `bazel run //tools:preset.update`.
-Note, you don't need to remember the command, it will be printed if the file is missing or has outdated contents.
+Note that you don't need to remember the command.
+A test target `preset.update_test` is also created, which prints the command if the file is missing or has outdated contents.
 
 Finally, import it into your project `/.bazelrc` file.
 We suggest you add it at the top, so that project-specific flags may override, as follows:
