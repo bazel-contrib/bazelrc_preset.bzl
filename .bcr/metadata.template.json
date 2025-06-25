@@ -12,6 +12,11 @@
         "github": "alexeagle",
         "name": "Alex Eagle",
         "github_user_id": 47395
+    },
+    {
+        "github": "hofbi",
+        "name": "Markus Hofbauer",
+        "github_user_id": 10724293
     }
   ],
   "repository": ["github:bazel-contrib/bazelrc-preset.bzl"],
