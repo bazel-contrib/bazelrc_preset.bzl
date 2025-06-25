@@ -1,7 +1,5 @@
 "Database of Bazel flags which apply across every Bazel use-case"
-# TODO: copy this code here? move the whole preset thing to bazel_features?
-# buildifier: disable=bzl-visibility
-load("@bazel_features//private:util.bzl", "ge", "lt")
+load("//private:util.bzl", "ge", "lt")
 
 FLAGS = {
     # https://registry.build/flag/bazel?flag=experimental_remote_cache_eviction_retries
