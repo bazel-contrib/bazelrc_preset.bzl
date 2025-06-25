@@ -1,24 +1,23 @@
-# bazelrc Presets
+# Preset for bazelrc
 
 Bazel has a tremendously large number of flags.
 Many are obscure, many are important to use, and many have an undesirable default value.
 
-Bazel options may be stored in `*.bazelrc` files, in several places on disk.
-Read [the Bazel bazelrc documentation](https://bazel.build/run/bazelrc).
-
-This rule generates a custom bazelrc file that matches your bazel version
-and makes it convenient to vendor into your repo.
+This rule generates a custom `bazelrc` file that matches your Bazel version and makes it convenient to vendor into your repo.
 We call this a "preset".
 
 > [!NOTE]  
 > Preset changes can cause behavior changes in your repo that are undesirable or even break the build.
 > Since vendoring is required, changes will be code-reviewed when they arrive in your repo, rather than as an invisible side-effect of updating the version of bazelrc-presets.
-> For this reason, this ruleset does not stricly follow Semantic Versioning.
+> For this reason, this rule does not stricly follow Semantic Versioning.
 
-## Usage
+Bazel options may be stored in `*.bazelrc` files, in several places on disk.
+Read [the Bazel bazelrc documentation](https://bazel.build/run/bazelrc).
 
-First add `bazelrc-preset.bzl` to your `MODULE.bazel` file.
-Then call it from a BUILD file, for example in `tools/BUILD`:
+## Install
+
+1. Add `bazelrc-preset.bzl` to your `MODULE.bazel` file.
+2. Call it from a BUILD file, for example in `tools/BUILD`:
 
 ```starlark
 load("@bazelrc-preset.bzl", "bazelrc_preset")
@@ -28,11 +27,11 @@ bazelrc_preset(
 )
 ```
 
-Now create the preset with `bazel run //tools:preset.update`.
+3. Create the preset by running `bazel run //tools:preset.update`.
 Note that you don't need to remember the command.
 A test target `preset.update_test` is also created, which prints the command if the file is missing or has outdated contents.
 
-Finally, import it into your project `/.bazelrc` file.
+4. Import it into your project's `/.bazelrc` file.
 We suggest you add it at the top, so that project-specific flags may override, as follows:
 
 ```
