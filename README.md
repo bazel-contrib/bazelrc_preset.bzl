@@ -6,10 +6,10 @@ Many are obscure, many are important to use, and many have an undesirable defaul
 This rule generates a custom `bazelrc` file that matches your Bazel version and makes it convenient to vendor into your repo.
 We call this a "preset".
 
-> [!NOTE]  
+> [!NOTE]
 > Preset changes can cause behavior changes in your repo that are undesirable or even break the build.
 > Since vendoring is required, changes will be code-reviewed when they arrive in your repo, rather than as an invisible side-effect of updating the version of bazelrc-presets.
-> For this reason, this rule does not stricly follow Semantic Versioning.
+> For this reason, this rule does not strictly follow Semantic Versioning.
 
 Bazel options may be stored in `*.bazelrc` files, in several places on disk.
 Read [the Bazel bazelrc documentation](https://bazel.build/run/bazelrc).
