@@ -1,4 +1,5 @@
 "Database of Bazel flags which apply across every Bazel use-case"
+
 load("//private:util.bzl", "ge", "lt")
 
 FLAGS = {
@@ -13,5 +14,5 @@ FLAGS = {
         https://github.com/bazelbuild/bazel/commit/739e37de66f4913bec1a55b2f2a162e7db6f2d0f
         Back-port the updated flag default value to older Bazel versions.
         """,
-    )   
+    ),
 }

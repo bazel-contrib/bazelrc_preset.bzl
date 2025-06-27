@@ -1,0 +1,40 @@
+default_stages: [pre-commit]
+repos:
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+      - id: check-useless-excludes
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        args: [--maxkb=1024]
+      - id: check-case-conflict
+      # - id: check-executables-have-shebangs
+      - id: check-illegal-windows-names
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-shebang-scripts-are-executable
+      - id: destroyed-symlinks
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: fix-byte-order-marker
+      - id: pretty-format-json
+        args: [--autofix]
+      - id: trailing-whitespace
+  - repo: https://github.com/Warchant/pre-commit-buildifier
+    rev: 0.1.5
+    hooks:
+      - id: buildifier
+        args: [--version, "v8.2.0"]
+      - id: buildifier-lint
+        args: [--version, "v8.2.0"]
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.17.2
+    hooks:
+      - id: yamlfmt
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.33.1
+    hooks:
+      - id: typos

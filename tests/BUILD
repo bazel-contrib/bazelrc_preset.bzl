@@ -9,7 +9,7 @@ generate_preset(
 # To inspect the changes to presets when contributors send a PR
 native_test(
     name = "test",
+    src = "cat.sh",
     args = ["$(rootpath :preset)"],
     data = [":preset"],
-    src = "cat.sh",
 )
