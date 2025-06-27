@@ -1,0 +1,2 @@
+# Shadows WORKSPACE when --enable_bzlmod=true
+# which is the case starting from Bazel 7
