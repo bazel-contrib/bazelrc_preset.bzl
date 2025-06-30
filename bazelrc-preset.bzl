@@ -6,6 +6,21 @@ load("//:flags.bzl", "FLAGS")
 def _strip(s):
     return s.strip()
 
+def _format_flag(flag, meta):
+    return "{} {}".format(
+        getattr(meta, "command", "common"),
+        _format_boolean_flag(flag, meta) if type(meta.default) == "bool" else _format_flag_with_value(flag, meta),
+    )
+
+def _format_flag_with_value(flag, meta):
+    return "--{}={}".format(
+        flag,
+        "\"{}\"".format(meta.default) if type(meta.default) == "string" else meta.default,
+    )
+
+def _format_boolean_flag(flag, meta):
+    return "--{}".format(flag) if meta.default else "--no{}".format(flag)
+
 def _generate_preset(ctx):
     content = ctx.actions.args().set_param_file_format("multiline")
     content.add_all([
@@ -19,11 +34,7 @@ def _generate_preset(ctx):
         if not getattr(meta, "if_bazel_version", True):
             continue  # Flag does not apply to the version of Bazel currently running
         content.add_all(meta.description.split("\n"), format_each = "# %s", map_each = _strip)
-        content.add("{} --{}={}".format(
-            getattr(meta, "command", "common"),
-            flag,
-            "\"{}\"".format(meta.default) if type(meta.default) == "string" else meta.default,
-        ))
+        content.add(_format_flag(flag, meta))
     ctx.actions.write(ctx.outputs.out, content)
 
 generate_preset = rule(
