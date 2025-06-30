@@ -1,6 +1,7 @@
 """Rule/Macro pair to produce bazelrc preset file"""
 
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file")
+load("@bazel_features_version//:version.bzl", "version")
 load("//:flags.bzl", "FLAGS")
 
 def _strip(s):
@@ -33,8 +34,13 @@ def _generate_preset(ctx):
     for flag, meta in FLAGS.items():
         if not getattr(meta, "if_bazel_version", True):
             continue  # Flag does not apply to the version of Bazel currently running
-        content.add_all(meta.description.split("\n"), format_each = "# %s", map_each = _strip)
+        content.add_all(meta.description.strip().split("\n"), format_each = "# %s", map_each = _strip)
         content.add(_format_flag(flag, meta))
+        content.add_all([
+            "#",
+            "# Docs: https://registry.build/flag/bazel@{}?filter={}".format(version, flag),
+            "",
+        ])
     ctx.actions.write(ctx.outputs.out, content)
 
 generate_preset = rule(
