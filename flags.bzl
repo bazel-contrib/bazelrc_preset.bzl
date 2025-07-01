@@ -28,7 +28,7 @@ FLAGS = {
             default = True,
             command = "coverage",
             description = """\
-            See https://github.com/bazelbuild/bazel/issues/20577 and stuff
+            See https://github.com/bazelbuild/bazel/issues/20577
             """,
         ),
     ],
