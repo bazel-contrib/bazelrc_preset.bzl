@@ -4,6 +4,15 @@ load("//private:util.bzl", "ge", "lt")
 
 # buildifier: keep-sorted
 FLAGS = {
+    "announce_rc": struct(
+        command = "common:ci",
+        default = True,
+        description = """\
+        On CI, announce all announces command options read from the bazelrc file(s) when starting up at the
+        beginning of each Bazel invocation. This is very useful on CI to be able to inspect which flags
+        are being applied on each run based on the order of overrides.
+        """,
+    ),
     "build_runfile_links": struct(
         default = False,
         description = """\
@@ -11,6 +20,20 @@ FLAGS = {
         See https://github.com/bazelbuild/bazel/issues/6627
         This may break local workflows that `build` a binary target, then run the resulting program outside of `bazel run`.
         In those cases, the script will need to call `bazel build --build_runfile_links //my/binary:target` and then execute the resulting program.
+        """,
+    ),
+    "color": struct(
+        command = "common:ci",
+        default = "yes",
+        description = """\
+        On CI, use colors to highlight output on the screen. Set to `no` if your CI does not display colors.
+        """,
+    ),
+    "curses": struct(
+        command = "common:ci",
+        default = "yes",
+        description = """\
+        On CI, use cursor controls in screen output.
         """,
     ),
     "enable_platform_specific_config": struct(
@@ -44,6 +67,31 @@ FLAGS = {
         Back-port the updated flag default value to older Bazel versions.
         """,
     ),
+    "flaky_test_attempts": struct(
+        command = "test:ci",
+        default = 2,
+        description = """\
+        Set this flag to enable re-tries of failed tests on CI.
+        When any test target fails, try one or more times. This applies regardless of whether the "flaky"
+        tag appears on the target definition.
+        This is a tradeoff: legitimately failing tests will take longer to report,
+        but we can "paper over" flaky tests that pass most of the time.
+
+        An alternative is to mark every flaky test with the `flaky = True` attribute, but this requires
+        the buildcop to make frequent code edits.
+        This flag is not recommended for local builds: flakiness is more likely to get fixed if it is
+        observed during development.
+
+        Note that when passing after the first attempt, Bazel will give a special "FLAKY" status rather than "PASSED".
+        """,
+    ),
+    "grpc_keepalive_time": struct(
+        command = "common:ci",
+        default = "30s",
+        description = """\
+        Fixes builds hanging on CI that get the TCP connection closed without sending RST packets.
+        """,
+    ),
     "heap_dump_on_oom": struct(
         default = True,
         description = """\
@@ -53,6 +101,44 @@ FLAGS = {
         You should configure CI to upload this artifact for later inspection.
         """,
     ),
+    "remote_download_toplevel": struct(
+        command = "common:ci",
+        default = True,
+        description = """\
+        On CI, only download remote outputs of top level targets to the local machine.
+        """,
+    ),
+    "remote_local_fallback": struct(
+        command = "common:ci",
+        default = True,
+        description = """\
+        On CI, fall back to standalone local execution strategy if remote execution fails.
+        Otherwise, when a grpc remote cache connection fails, it would fail the build.
+        """,
+    ),
+    "remote_timeout": struct(
+        command = "common:ci",
+        default = 3600,
+        description = """\
+        On CI, extend the maximum amount of time to wait for remote execution and cache calls.
+        """,
+    ),
+    "remote_upload_local_results": struct(
+        command = "common:ci",
+        default = True,
+        description = """\
+        On CI, upload locally executed action results to the remote cache.
+        """,
+    ),
+    "show_progress_rate_limit": struct(
+        command = "common:ci",
+        default = 60,
+        description = """\
+        Only show progress every 60 seconds on CI.
+        We want to find a compromise between printing often enough to show that the build isn't stuck,
+        but not so often that we produce a long log file that requires a lot of scrolling.
+        """,
+    ),
     "show_result": struct(
         default = 20,
         description = """\
@@ -60,6 +146,21 @@ FLAGS = {
         This option requires an integer argument, which is the threshold number of targets above which result information is not printed.
         Show the output files created by builds that requested more than one target.
         This helps users locate the build outputs in more cases.
+        """,
+    ),
+    "show_timestamps": struct(
+        command = "common:ci",
+        default = True,
+        description = """\
+        On CI, add a timestamp to each message generated by Bazel specifying the time at which the message was displayed.
+        This makes it easier to reason about what were the slowest steps on CI.
+        """,
+    ),
+    "terminal_columns": struct(
+        command = "common:ci",
+        default = 143,
+        description = """\
+        The terminal width in columns. Configure this to override the default value based on what your CI system renders.
         """,
     ),
 }
