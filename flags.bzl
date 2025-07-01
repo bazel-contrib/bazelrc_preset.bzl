@@ -55,6 +55,13 @@ FLAGS = {
         equivalent to using `--config=linux` on Linux, `--config=windows` on Windows, etc.
         """,
     ),
+    "experimental_check_external_repository_files": struct(
+        default = False,
+        description = """\
+        Speed up all builds by not checking if external repository files have been modified.
+        For reference: https://github.com/bazelbuild/bazel/blob/1af61b21df99edc2fc66939cdf14449c2661f873/src/main/java/com/google/devtools/build/lib/bazel/repository/RepositoryOptions.java#L244
+        """,
+    ),
     "experimental_remote_cache_eviction_retries": struct(
         default = 5,
         if_bazel_version = ge("6.2.0") and lt("8.0.0rc1"),
@@ -138,6 +145,14 @@ FLAGS = {
         default = True,
         description = """\
         On CI, upload locally executed action results to the remote cache.
+        """,
+    ),
+    "reuse_sandbox_directories": struct(
+        default = True,
+        description = """\
+        Reuse sandbox directories between invocations.
+        Directories used by sandboxed non-worker execution may be reused to avoid unnecessary setup costs.
+        Saves time on sandbox creation and deletion when many of the same kind of action is spawned during the build.
         """,
     ),
     "show_progress_rate_limit": struct(
