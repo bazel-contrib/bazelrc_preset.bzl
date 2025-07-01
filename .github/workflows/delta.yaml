@@ -11,9 +11,9 @@ jobs:
       matrix:
         bazel_version:
           - "6.0.0"
-          - "6.4.0"
-          - "7.0.0"
-          - "8.0.0"
+          - "6.x"
+          - "7.x"
+          - "8.x"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
