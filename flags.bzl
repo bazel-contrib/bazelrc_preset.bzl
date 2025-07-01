@@ -13,15 +13,25 @@ FLAGS = {
         are being applied on each run based on the order of overrides.
         """,
     ),
-    "build_runfile_links": struct(
-        default = False,
-        description = """\
-        Avoid creating a runfiles tree for binaries or tests until it is needed.
-        See https://github.com/bazelbuild/bazel/issues/6627
-        This may break local workflows that `build` a binary target, then run the resulting program outside of `bazel run`.
-        In those cases, the script will need to call `bazel build --build_runfile_links //my/binary:target` and then execute the resulting program.
-        """,
-    ),
+    "build_runfile_links": [
+        struct(
+            default = False,
+            description = """\
+            Avoid creating a runfiles tree for binaries or tests until it is needed.
+            See https://github.com/bazelbuild/bazel/issues/6627
+            This may break local workflows that `build` a binary target, then run the resulting program outside of `bazel run`.
+            In those cases, the script will need to call `bazel build --build_runfile_links //my/binary:target` and then execute the resulting program.
+            """,
+        ),
+        struct(
+            if_bazel_version = lt("8.0.0rc1"),
+            default = True,
+            command = "coverage",
+            description = """\
+            See https://github.com/bazelbuild/bazel/issues/20577
+            """,
+        ),
+    ],
     "color": struct(
         command = "common:ci",
         default = "yes",
