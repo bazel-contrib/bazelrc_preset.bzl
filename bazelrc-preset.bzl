@@ -3,15 +3,28 @@
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file")
 load("@bazel_features_version//:version.bzl", "version")
 load("//:flags.bzl", "FLAGS")
+load("//private:util.bzl", "lt")
 
 def _strip(s):
     return s.strip()
 
 def _format_flag(flag, meta):
-    return "{} {}".format(
-        getattr(meta, "command", "common"),
+    command = getattr(meta, "command", "common")
+    commands = _expand_commands(command)
+
+    return "\n".join(["{} {}".format(
+        command,
         _format_boolean_flag(flag, meta) if type(meta.default) == "bool" else _format_flag_with_value(flag, meta),
-    )
+    ) for command in commands])
+
+def _expand_commands(command):
+    if lt("6.3.0"):
+        if command == "common":
+            return ["build", "fetch", "query"]
+        if command.startswith("common:"):
+            config = command.split(":")[1]
+            return ["build:{}".format(config), "fetch:{}".format(config), "query:{}".format(config)]
+    return [command]
 
 def _format_flag_with_value(flag, meta):
     return "--{}={}".format(
