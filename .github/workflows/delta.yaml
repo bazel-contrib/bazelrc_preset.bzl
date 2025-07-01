@@ -1,0 +1,53 @@
+# Show the diff of generated files between base commit and HEAD
+name: Show delta
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  delta:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        bazel_version:
+          - "6.0.0"
+          - "6.x"
+          - "7.x"
+          - "8.x"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # get enough history to include the base commit
+      - name: Current output
+        id: new
+        run: |
+          bazel build tests:preset
+          cat bazel-bin/tests/preset.bazelrc | tee /tmp/new
+        env:
+          USE_BAZEL_VERSION: ${{ matrix.bazel_version }}
+      - name: Prior output
+        id: old
+        run: |
+          git checkout ${{ github.event.pull_request.base.sha }}
+          bazel build tests:preset
+          cat bazel-bin/tests/preset.bazelrc | tee /tmp/old
+        env:
+          USE_BAZEL_VERSION: ${{ matrix.bazel_version }}
+      - name: Show diff
+        id: diff
+        run: |
+          echo "🔍 Diff for Bazel ${{ matrix.bazel_version }}" > /tmp/diff
+          echo '```diff' >> /tmp/diff
+          if ! diff /tmp/old /tmp/new >> /tmp/diff; then
+            echo "different=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo '```' >> /tmp/diff
+          echo "diff=/tmp/diff" >> $GITHUB_OUTPUT
+      - uses: thollander/actions-comment-pull-request@v3
+        if: steps.diff.outputs.different == 'true'
+        with:
+          message:
+          file-path: ${{ steps.diff.outputs.diff }}
+          # Update existing comment on new PR snapshot
+          comment-tag: ${{ matrix.bazel_version }}
