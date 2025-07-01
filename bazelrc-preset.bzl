@@ -37,15 +37,9 @@ def _format_boolean_flag(flag, meta):
 
 def _generate_preset_flag(content, flag, meta):
     if not getattr(meta, "if_bazel_version", True):
-        return content  # Flag does not apply to the version of Bazel currently running
+        return  # Flag does not apply to the version of Bazel currently running
     content.add_all(meta.description.strip().split("\n"), format_each = "# %s", map_each = _strip)
     content.add(_format_flag(flag, meta))
-    content.add_all([
-        "#",
-        "# Docs: https://registry.build/flag/bazel@{}?filter={}".format(version, flag),
-        "",
-    ])
-    return content
 
 def _generate_preset(ctx):
     content = ctx.actions.args().set_param_file_format("multiline")
@@ -57,11 +51,13 @@ def _generate_preset(ctx):
     content.add("")
 
     for flag, meta in FLAGS.items():
-        if type(meta) == type([]):
-            for meta_item in meta:
-                content = _generate_preset_flag(content, flag, meta_item)
-        else:
-            content = _generate_preset_flag(content, flag, meta)
+        content.add("# {}".format(flag))
+        content.add("# Docs: https://registry.build/flag/bazel@{}?filter={}".format(version, flag))
+        if type(meta) != type([]):
+            meta = [meta]
+        for meta_item in meta:
+            _generate_preset_flag(content, flag, meta_item)
+        content.add("")
     ctx.actions.write(ctx.outputs.out, content)
 
 generate_preset = rule(
