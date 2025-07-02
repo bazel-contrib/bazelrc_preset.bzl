@@ -118,6 +118,15 @@ FLAGS = {
         You should configure CI to upload this artifact for later inspection.
         """,
     ),
+    "incompatible_strict_action_env": struct(
+        default = True,
+        description = """\
+        Make builds more reproducible by using a static value for PATH and not inheriting LD_LIBRARY_PATH.
+        Use `--action_env=ENV_VARIABLE` if you want to inherit specific variables from the environment where Bazel runs.
+        Note that doing so can prevent cross-user caching if a shared cache is used.
+        See https://github.com/bazelbuild/bazel/issues/2574 for more details.
+        """,
+    ),
     "remote_download_toplevel": struct(
         command = "common:ci",
         default = True,
