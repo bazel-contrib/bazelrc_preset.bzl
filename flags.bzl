@@ -145,6 +145,14 @@ FLAGS = {
         This flag was added in Bazel 0.27 and flipped in Bazel 8: https://github.com/bazelbuild/bazel/issues/8195
         """,
     ),
+    "incompatible_exclusive_test_sandboxed": struct(
+        default = True,
+        if_bazel_version = lt("7.0.0rc1"),
+        description = """\
+        This behavior was not intended and was a leftover from open-sourcing Bazel.
+        See https://github.com/bazelbuild/bazel/issues/16871.
+        """,
+    ),
     "incompatible_strict_action_env": struct(
         default = True,
         description = """\
