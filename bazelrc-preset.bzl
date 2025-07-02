@@ -2,6 +2,7 @@
 
 load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file")
 load("@bazel_features_version//:version.bzl", "version")
+load("@bazel_skylib//lib:new_sets.bzl", "sets")
 load("//:flags.bzl", "FLAGS")
 load("//private:util.bzl", "lt")
 
@@ -43,8 +44,8 @@ def _generate_preset_flag(content, flag, meta):
     return content
 
 def _verify_command_overrides(meta):
-    unique_commands = set([getattr(meta_item, "command", "common") for meta_item in meta])
-    if len(unique_commands) != len(meta):
+    unique_commands = sets.make([getattr(meta_item, "command", "common") for meta_item in meta])
+    if sets.length(unique_commands) != len(meta):
         fail("Multiple flag overrides use the same command. Make sure flag overrides use different command.")
 
 def _generate_preset(ctx):
