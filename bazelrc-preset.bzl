@@ -38,7 +38,7 @@ def _format_boolean_flag(flag, meta):
 
 def _generate_preset_flag(content, flag, meta):
     if not getattr(meta, "if_bazel_version", True):
-        return content  # Flag does not apply to the version of Bazel currently running
+        return None  # Flag does not apply to the version of Bazel currently running
     content.add_all(meta.description.strip().split("\n"), format_each = "# %s", map_each = _strip)
     content.add(_format_flag(flag, meta))
     return content
@@ -58,14 +58,22 @@ def _generate_preset(ctx):
     content.add("")
 
     for flag, meta in FLAGS.items():
-        content.add("# {}".format(flag))
-        content.add("# Docs: https://registry.build/flag/bazel@{}?filter={}".format(version, flag))
+        # Syntax sugar: allow a struct to stand in for a singleton list
         if type(meta) != type([]):
             meta = [meta]
         _verify_command_overrides(meta)
+        flag_appears = False
         for meta_item in meta:
-            content = _generate_preset_flag(content, flag, meta_item)
-        content.add("")
+            content_with_flag = _generate_preset_flag(content, flag, meta_item)
+            if content_with_flag:
+                content = content_with_flag
+                flag_appears = True
+                break
+        if flag_appears:
+            content.add_all([
+                "# Docs: https://registry.build/flag/bazel@{}?filter={}".format(version, flag),
+                "",
+            ])
     ctx.actions.write(ctx.outputs.out, content)
 
 generate_preset = rule(
