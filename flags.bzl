@@ -203,7 +203,7 @@ FLAGS = {
         This makes the log noisier in exchange for reducing the time-to-feedback on test failures for users.
         """,
     ),
-    "test_output_streamed": struct(
+    "test_output": struct(
         command = "common:debug",
         default = "streamed",
         description = """\
