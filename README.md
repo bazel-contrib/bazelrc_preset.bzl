@@ -50,6 +50,10 @@ import %workspace%/tools/preset.bazelrc
 try-import %workspace%/user.bazelrc
 ```
 
+5. Some flags are enabled only under a given config.
+   For example, many flags apply only when running on CI.
+   Configure your CI system to always pass `--config=ci` when running Bazel (for example, put it in the system bazelrc on CI runner machines).
+
 ## References and Credits
 
 This was originally a feature of Aspect's bazel-lib:
