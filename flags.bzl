@@ -118,6 +118,15 @@ FLAGS = {
         You should configure CI to upload this artifact for later inspection.
         """,
     ),
+    "legacy_external_runfiles": struct(
+        default = False,
+        if_bazel_version = lt("8.0.0rc1"),
+        description = """\
+        Performance improvement: avoid laying out a second copy of the runfiles tree.
+        See https://github.com/bazelbuild/bazel/issues/23574.
+        This flag was flipped for Bazel 8.
+        """,
+    ),
     "remote_download_toplevel": struct(
         command = "common:ci",
         default = True,
