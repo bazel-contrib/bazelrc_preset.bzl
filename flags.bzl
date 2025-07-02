@@ -196,21 +196,23 @@ FLAGS = {
         The terminal width in columns. Configure this to override the default value based on what your CI system renders.
         """,
     ),
-    "test_output": struct(
-        default = "errors",
-        description = """\
-        Output test errors to stderr so users don't have to `cat` or open test failure log files when test fail.
-        This makes the log noisier in exchange for reducing the time-to-feedback on test failures for users.
-        """,
-    ),
-    "test_output": struct(
-        command = "common:debug",
-        default = "streamed",
-        description = """\
-        Stream stdout/stderr output from each test in real-time.
-        This provides immediate feedback during test execution, useful for debugging test failures.
-        """,
-    ),
+    "test_output": [
+        struct(
+            default = "errors",
+            description = """\
+            Output test errors to stderr so users don't have to `cat` or open test failure log files when test fail.
+            This makes the log noisier in exchange for reducing the time-to-feedback on test failures for users.
+            """,
+        ),
+        struct(
+            command = "common:debug",
+            default = "streamed",
+            description = """\
+            Stream stdout/stderr output from each test in real-time.
+            This provides immediate feedback during test execution, useful for debugging test failures.
+            """,
+        ),
+    ],
     "test_strategy": struct(
         command = "common:debug",
         default = "exclusive",
