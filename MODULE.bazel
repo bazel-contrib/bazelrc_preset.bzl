@@ -1,4 +1,4 @@
-module(name = "bazelrc-preset.bzl")
+module(name = "bazelrc_preset.bzl")
 
 # Lower-bound of dependency versions
 bazel_dep(name = "aspect_bazel_lib", version = "2.13.0")

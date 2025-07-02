@@ -8,8 +8,8 @@ TAG=$1
 # The prefix is chosen to match what GitHub generates for source archives
 # This guarantees that users can easily switch from a released artifact to a source archive
 # with minimal differences in their code (e.g. strip_prefix remains the same)
-PREFIX="bazelrc-preset.bzl-${TAG:1}"
-ARCHIVE="bazelrc-preset.bzl-$TAG.tar.gz"
+PREFIX="bazelrc_preset.bzl-${TAG:1}"
+ARCHIVE="bazelrc_preset.bzl-$TAG.tar.gz"
 
 # NB: configuration for 'git archive' is in /.gitattributes
 git archive --format=tar --prefix=${PREFIX}/ ${TAG} | gzip > $ARCHIVE
@@ -19,7 +19,7 @@ cat << EOF
 Add to your \`MODULE.bazel\` file:
 
 \`\`\`starlark
-bazel_dep(name = "bazelrc-preset.bzl", version = "${TAG:1}")
+bazel_dep(name = "bazelrc_preset.bzl", version = "${TAG:1}")
 \`\`\`
 
 Then follow more install instructions from the project README.

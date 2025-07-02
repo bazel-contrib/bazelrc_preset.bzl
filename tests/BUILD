@@ -1,5 +1,5 @@
 load("@bazel_skylib//rules:native_binary.bzl", "native_test")
-load("//:bazelrc-preset.bzl", "generate_preset")
+load("//:bazelrc_preset.bzl", "generate_preset")
 
 generate_preset(
     name = "preset",
