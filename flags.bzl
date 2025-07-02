@@ -118,12 +118,6 @@ FLAGS = {
         You should configure CI to upload this artifact for later inspection.
         """,
     ),
-    "keep_going": struct(
-        default = True,
-        description = """\
-        Attempt to build & test every target whose prerequisites were successfully built.
-        """,
-    ),
     "remote_download_toplevel": struct(
         command = "common:ci",
         default = True,
