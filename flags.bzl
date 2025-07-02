@@ -118,6 +118,14 @@ FLAGS = {
         You should configure CI to upload this artifact for later inspection.
         """,
     ),
+    "incompatible_exclusive_test_sandboxed": struct(
+        default = True,
+        if_bazel_version = lt("7.0.0rc1"),
+        description = """\
+        This behavior was not intended and was a leftover from open-sourcing Bazel.
+        See https://github.com/bazelbuild/bazel/issues/16871.
+        """,
+    ),
     "remote_download_toplevel": struct(
         command = "common:ci",
         default = True,
