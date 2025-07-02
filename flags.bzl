@@ -155,6 +155,16 @@ FLAGS = {
         Saves time on sandbox creation and deletion when many of the same kind of action is spawned during the build.
         """,
     ),
+    "sandbox_default_allow_network": struct(
+        default = False,
+        description = """\
+        Don't allow network access for build actions in the sandbox by default.
+        Avoids accidental non-hermeticity in actions/tests which depend on remote services.
+        Developers should tag targets with `tags=["requires-network"]` to be explicit that they need network access.
+        Note that the sandbox cannot print a message to the console if it denies network access,
+        so failures under this flag appear as application errors in the networking layer.
+        """,
+    ),
     "show_progress_rate_limit": struct(
         command = "common:ci",
         default = 60,
