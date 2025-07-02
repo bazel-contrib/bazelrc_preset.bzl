@@ -136,6 +136,15 @@ FLAGS = {
         > so doing it behind their backs introduces confusion and changes the semantics of imports
         """,
     ),
+    "incompatible_disallow_empty_glob": struct(
+        default = True,
+        if_bazel_version = lt("8.0.0rc1"),
+        description = """\
+        Disallow empty glob patterns.
+        The glob() function tends to be error-prone, because any typo in a path will silently return an empty list.
+        This flag was added in Bazel 0.27 and flipped in Bazel 8: https://github.com/bazelbuild/bazel/issues/8195
+        """,
+    ),
     "remote_download_toplevel": struct(
         command = "common:ci",
         default = True,
