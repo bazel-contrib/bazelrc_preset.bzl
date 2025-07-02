@@ -32,6 +32,14 @@ FLAGS = {
             """,
         ),
     ],
+    "cache_test_results": struct(
+        command = "common:debug",
+        default = False,
+        description = """\
+        Always run tests even if they have cached results.
+        This ensures tests are executed fresh each time, useful for debugging and ensuring test reliability.
+        """,
+    ),
     "color": struct(
         command = "common:ci",
         default = "yes",
@@ -208,11 +216,29 @@ FLAGS = {
         The terminal width in columns. Configure this to override the default value based on what your CI system renders.
         """,
     ),
-    "test_output": struct(
-        default = "errors",
+    "test_output": [
+        struct(
+            default = "errors",
+            description = """\
+            Output test errors to stderr so users don't have to `cat` or open test failure log files when test fail.
+            This makes the log noisier in exchange for reducing the time-to-feedback on test failures for users.
+            """,
+        ),
+        struct(
+            command = "common:debug",
+            default = "streamed",
+            description = """\
+            Stream stdout/stderr output from each test in real-time.
+            This provides immediate feedback during test execution, useful for debugging test failures.
+            """,
+        ),
+    ],
+    "test_strategy": struct(
+        command = "common:debug",
+        default = "exclusive",
         description = """\
-        Output test errors to stderr so users don't have to `cat` or open test failure log files when test fail.
-        This makes the log noisier in exchange for reducing the time-to-feedback on test failures for users.
+        Run one test at a time in exclusive mode.
+        This prevents test interference and provides clearer output when debugging test issues.
         """,
     ),
     "test_summary": struct(
@@ -222,6 +248,14 @@ FLAGS = {
         The default test_summary ("short") prints a result for every test target that was executed.
         In a large repo this amounts to hundreds of lines of additional log output when testing a broad wildcard pattern like //...
         This value means to print information only about unsuccessful tests that were run.
+        """,
+    ),
+    "test_timeout": struct(
+        command = "common:debug",
+        default = 9999,
+        description = """\
+        Prevent long running tests from timing out.
+        Set to a high value to allow tests to complete even if they take longer than expected.
         """,
     ),
 }
