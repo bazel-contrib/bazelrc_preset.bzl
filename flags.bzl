@@ -32,6 +32,14 @@ FLAGS = {
             """,
         ),
     ],
+    "cache_test_results": struct(
+        command = "common:debug",
+        default = False,
+        description = """\
+        Always run tests even if they have cached results.
+        This ensures tests are executed fresh each time, useful for debugging and ensuring test reliability.
+        """,
+    ),
     "color": struct(
         command = "common:ci",
         default = "yes",
@@ -118,12 +126,49 @@ FLAGS = {
         You should configure CI to upload this artifact for later inspection.
         """,
     ),
+    "incompatible_default_to_explicit_init_py": struct(
+        default = True,
+        description = """\
+        By default, Bazel automatically creates __init__.py files for py_binary and py_test targets.
+        From https://github.com/bazelbuild/bazel/issues/10076:
+        > It is magic at a distance.
+        > Python programmers are already used to creating __init__.py files in their source trees,
+        > so doing it behind their backs introduces confusion and changes the semantics of imports
+        """,
+    ),
+    "incompatible_disallow_empty_glob": struct(
+        default = True,
+        if_bazel_version = lt("8.0.0rc1"),
+        description = """\
+        Disallow empty glob patterns.
+        The glob() function tends to be error-prone, because any typo in a path will silently return an empty list.
+        This flag was added in Bazel 0.27 and flipped in Bazel 8: https://github.com/bazelbuild/bazel/issues/8195
+        """,
+    ),
     "incompatible_exclusive_test_sandboxed": struct(
         default = True,
         if_bazel_version = lt("7.0.0rc1"),
         description = """\
         This behavior was not intended and was a leftover from open-sourcing Bazel.
         See https://github.com/bazelbuild/bazel/issues/16871.
+        """,
+    ),
+    "incompatible_strict_action_env": struct(
+        default = True,
+        description = """\
+        Make builds more reproducible by using a static value for PATH and not inheriting LD_LIBRARY_PATH.
+        Use `--action_env=ENV_VARIABLE` if you want to inherit specific variables from the environment where Bazel runs.
+        Note that doing so can prevent cross-user caching if a shared cache is used.
+        See https://github.com/bazelbuild/bazel/issues/2574 for more details.
+        """,
+    ),
+    "legacy_external_runfiles": struct(
+        default = False,
+        if_bazel_version = lt("8.0.0rc1"),
+        description = """\
+        Performance improvement: avoid laying out a second copy of the runfiles tree.
+        See https://github.com/bazelbuild/bazel/issues/23574.
+        This flag was flipped for Bazel 8.
         """,
     ),
     "remote_download_toplevel": struct(
@@ -163,6 +208,16 @@ FLAGS = {
         Saves time on sandbox creation and deletion when many of the same kind of action is spawned during the build.
         """,
     ),
+    "sandbox_default_allow_network": struct(
+        default = False,
+        description = """\
+        Don't allow network access for build actions in the sandbox by default.
+        Avoids accidental non-hermeticity in actions/tests which depend on remote services.
+        Developers should tag targets with `tags=["requires-network"]` to be explicit that they need network access.
+        Note that the sandbox cannot print a message to the console if it denies network access,
+        so failures under this flag appear as application errors in the networking layer.
+        """,
+    ),
     "show_progress_rate_limit": struct(
         command = "common:ci",
         default = 60,
@@ -196,6 +251,31 @@ FLAGS = {
         The terminal width in columns. Configure this to override the default value based on what your CI system renders.
         """,
     ),
+    "test_output": [
+        struct(
+            default = "errors",
+            description = """\
+            Output test errors to stderr so users don't have to `cat` or open test failure log files when test fail.
+            This makes the log noisier in exchange for reducing the time-to-feedback on test failures for users.
+            """,
+        ),
+        struct(
+            command = "common:debug",
+            default = "streamed",
+            description = """\
+            Stream stdout/stderr output from each test in real-time.
+            This provides immediate feedback during test execution, useful for debugging test failures.
+            """,
+        ),
+    ],
+    "test_strategy": struct(
+        command = "common:debug",
+        default = "exclusive",
+        description = """\
+        Run one test at a time in exclusive mode.
+        This prevents test interference and provides clearer output when debugging test issues.
+        """,
+    ),
     "test_summary": struct(
         command = "test:ci",
         default = "terse",
@@ -203,6 +283,14 @@ FLAGS = {
         The default test_summary ("short") prints a result for every test target that was executed.
         In a large repo this amounts to hundreds of lines of additional log output when testing a broad wildcard pattern like //...
         This value means to print information only about unsuccessful tests that were run.
+        """,
+    ),
+    "test_timeout": struct(
+        command = "common:debug",
+        default = 9999,
+        description = """\
+        Prevent long running tests from timing out.
+        Set to a high value to allow tests to complete even if they take longer than expected.
         """,
     ),
 }
