@@ -42,6 +42,11 @@ def _generate_preset_flag(content, flag, meta):
     content.add(_format_flag(flag, meta))
     return content
 
+def _verify_command_overrides(meta):
+    unique_commands = set([getattr(meta_item, "command", "common") for meta_item in meta])
+    if len(unique_commands) != len(meta):
+        fail("Multiple flag overrides use the same command. Make sure flag overrides use different command.")
+
 def _generate_preset(ctx):
     content = ctx.actions.args().set_param_file_format("multiline")
     content.add_all([
@@ -56,6 +61,7 @@ def _generate_preset(ctx):
         content.add("# Docs: https://registry.build/flag/bazel@{}?filter={}".format(version, flag))
         if type(meta) != type([]):
             meta = [meta]
+        _verify_command_overrides(meta)
         for meta_item in meta:
             content = _generate_preset_flag(content, flag, meta_item)
         content.add("")
