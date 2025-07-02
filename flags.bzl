@@ -188,6 +188,13 @@ FLAGS = {
         The terminal width in columns. Configure this to override the default value based on what your CI system renders.
         """,
     ),
+    "test_output": struct(
+        default = "errors",
+        description = """\
+        Output test errors to stderr so users don't have to `cat` or open test failure log files when test fail.
+        This makes the log noisier in exchange for reducing the time-to-feedback on test failures for users.
+        """,
+    ),
     "test_summary": struct(
         command = "test:ci",
         default = "terse",
