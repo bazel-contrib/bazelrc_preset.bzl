@@ -24,6 +24,7 @@ jobs:
         run: |
           bazel build tests:preset
           cat bazel-bin/tests/preset.bazelrc | tee /tmp/new
+          git restore MODULE.bazel.lock
         env:
           USE_BAZEL_VERSION: ${{ matrix.bazel_version }}
       - name: Prior output

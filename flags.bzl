@@ -195,4 +195,13 @@ FLAGS = {
         This makes the log noisier in exchange for reducing the time-to-feedback on test failures for users.
         """,
     ),
+    "test_summary": struct(
+        command = "test:ci",
+        default = "terse",
+        description = """\
+        The default test_summary ("short") prints a result for every test target that was executed.
+        In a large repo this amounts to hundreds of lines of additional log output when testing a broad wildcard pattern like //...
+        This value means to print information only about unsuccessful tests that were run.
+        """,
+    ),
 }
