@@ -145,6 +145,15 @@ FLAGS = {
         This flag was added in Bazel 0.27 and flipped in Bazel 8: https://github.com/bazelbuild/bazel/issues/8195
         """,
     ),
+    "incompatible_strict_action_env": struct(
+        default = True,
+        description = """\
+        Make builds more reproducible by using a static value for PATH and not inheriting LD_LIBRARY_PATH.
+        Use `--action_env=ENV_VARIABLE` if you want to inherit specific variables from the environment where Bazel runs.
+        Note that doing so can prevent cross-user caching if a shared cache is used.
+        See https://github.com/bazelbuild/bazel/issues/2574 for more details.
+        """,
+    ),
     "legacy_external_runfiles": struct(
         default = False,
         if_bazel_version = lt("8.0.0rc1"),
