@@ -118,6 +118,16 @@ FLAGS = {
         You should configure CI to upload this artifact for later inspection.
         """,
     ),
+    "incompatible_default_to_explicit_init_py": struct(
+        default = True,
+        description = """\
+        By default, Bazel automatically creates __init__.py files for py_binary and py_test targets.
+        From https://github.com/bazelbuild/bazel/issues/10076:
+        > It is magic at a distance.
+        > Python programmers are already used to creating __init__.py files in their source trees,
+        > so doing it behind their backs introduces confusion and changes the semantics of imports
+        """,
+    ),
     "remote_download_toplevel": struct(
         command = "common:ci",
         default = True,
