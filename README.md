@@ -32,21 +32,28 @@ Note that you don't need to remember the command.
 A test target `preset.update_test` is also created, which prints the command if the file is missing or has outdated contents.
 
 4. Import it into your project's `/.bazelrc` file.
-We suggest you add it at the top, so that project-specific flags may override, as follows:
+We suggest you add it at the top, so that project-specific flags may override values.
+See https://bazel.build/configure/best-practices#bazelrc-file
+
+You can copy this template to get started:
 
 ```
+########################
 # Import bazelrc presets
 import %workspace%/tools/preset.bazelrc
 ...
 
-### Project-specific flags ###
+########################
+# Project-specific flags
+# This is also a place to override settings from the presets
 
 ...
 
+########################
+# User preferences
 # Load any settings & overrides specific to the current user from `user.bazelrc`.
-# This file should appear in `.gitignore` so that settings are not shared with team members. This
-# should be last statement in this config so the user configuration is able to overwrite flags from
-# this file. See https://bazel.build/configure/best-practices#bazelrc-file.
+# This file should appear in `.gitignore` so that settings are not shared with team members.
+# This should be last statement in this config so the user configuration overrides anything above.
 try-import %workspace%/user.bazelrc
 ```
 
