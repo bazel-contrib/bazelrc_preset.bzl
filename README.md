@@ -8,7 +8,7 @@ We call this a "preset".
 
 > [!NOTE]
 > Preset changes can cause behavior changes in your repo that are undesirable or even break the build.
-> Since vendoring is required, changes will be code-reviewed when they arrive in your repo, rather than as an invisible side-effect of updating the version of bazelrc-presets.
+> Since vendoring is required, changes will be code-reviewed when they arrive in your repo, rather than as an invisible side-effect of updating the version of bazelrc_preset.
 > For this reason, this rule does not strictly follow Semantic Versioning.
 
 Bazel options may be stored in `*.bazelrc` files, in several places on disk.
@@ -16,11 +16,11 @@ Read [the Bazel bazelrc documentation](https://bazel.build/run/bazelrc).
 
 ## Install
 
-1. Add `bazelrc-preset.bzl` to your `MODULE.bazel` file.
+1. Add `bazelrc_preset.bzl` to your `MODULE.bazel` file.
 2. Call it from a BUILD file, for example in `tools/BUILD`:
 
 ```starlark
-load("@bazelrc-preset.bzl", "bazelrc_preset")
+load("@bazelrc_preset.bzl", "bazelrc_preset")
 
 bazelrc_preset(
     name = "preset",
