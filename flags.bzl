@@ -70,6 +70,14 @@ FLAGS = {
         For reference: https://github.com/bazelbuild/bazel/blob/1af61b21df99edc2fc66939cdf14449c2661f873/src/main/java/com/google/devtools/build/lib/bazel/repository/RepositoryOptions.java#L244
         """,
     ),
+    "experimental_fetch_all_coverage_outputs": struct(
+        default = True,
+        description = """\
+        Always download coverage files for tests from the remote cache. By default, coverage files are not
+        downloaded on test result cache hits when --remote_download_minimal is enabled, making it impossible
+        to generate a full coverage report.
+        """,
+    ),
     "experimental_remote_cache_eviction_retries": struct(
         default = 5,
         if_bazel_version = ge("6.2.0") and lt("8.0.0rc1"),
