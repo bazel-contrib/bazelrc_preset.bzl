@@ -1,5 +1,5 @@
 {
-  "homepage": "https://github.com/bazel-contrib/bazelrc_preset.bzl",
+  "homepage": "https://github.com/bazel-contrib/bazelrc-preset.bzl",
   "maintainers": [
     {
       "email": "fabian@buildbuddy.io",
@@ -20,7 +20,7 @@
     }
   ],
   "repository": [
-    "github:bazel-contrib/bazelrc_preset.bzl"
+    "github:bazel-contrib/bazelrc-preset.bzl"
   ],
   "versions": [],
   "yanked_versions": {}
