@@ -134,6 +134,16 @@ FLAGS = {
         You should configure CI to upload this artifact for later inspection.
         """,
     ),
+    "host_jvm_args": struct(
+        default = "-DBAZEL_TRACK_SOURCE_DIRECTORIES=1",
+        command = "startup",
+        description = """\
+        Allow the Bazel server to check directory sources for changes. Ensures that the Bazel server
+        notices when a directory changes, if you have a directory listed in the srcs of some target.
+        Recommended when using [copy_directory](https://github.com/bazel-contrib/bazel-lib/blob/main/docs/copy_directory.md)
+        and [rules_js](https://github.com/aspect-build/rules_js) since npm package are source directories inputs to copy_directory actions.
+        """,
+    ),
     "incompatible_default_to_explicit_init_py": struct(
         default = True,
         description = """\
