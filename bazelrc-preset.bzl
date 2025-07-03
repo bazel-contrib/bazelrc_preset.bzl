@@ -82,6 +82,15 @@ generate_preset = rule(
 )
 
 def bazelrc_preset(name, out_file = None):
+    """
+    Creates a bazelrc preset file.
+
+    Args:
+        name: The name of the preset.
+        out_file: The file to write the preset to. If not provided, the preset will be written to `{name}.bazelrc`.
+    """
+    if lt("6.0.0"):
+        fail("bazelrc_preset requires Bazel 6 or later. You are running Bazel {}".format(version))
     generate_preset(
         name = name,
         out = "_{}.bazelrc".format(name),
