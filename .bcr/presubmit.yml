@@ -8,4 +8,4 @@ tasks:
     platform: ${{ platform }}
     bazel: ${{ bazel }}
     build_targets:
-      - '@bazelrc_preset.bzl//...'
+      - '@bazelrc-preset.bzl//...'
